@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Doge2</string>
+    <string name="send_to">Send</string>
+    <string-array name="memes">
+        <item>wonka</item>
+        <item>doge</item>
+        <item>facepalm</item>
+        <item>fbf</item>
+        <item>ggg</item>
+        <item>boat</item>
+        <item>philosoraptor</item>
+        <item>awkward</item>
+    </string-array>
+</resources>

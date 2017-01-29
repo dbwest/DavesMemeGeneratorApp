@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.west.doge2.MainActivity">
+
+    <ImageView
+        app:srcCompat="@android:color/holo_blue_bright"
+        android:id="@+id/imageView"
+        android:scaleType="matrix"
+        android:layout_alignParentTop="true"
+        android:layout_width="700px"
+        android:layout_height="500px" />
+
+    <Button
+        android:text="Generate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="31dp"
+        android:layout_marginEnd="31dp"
+        android:id="@+id/makeMeme"
+        android:onClick="genMeme"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/bottomText"
+        android:layout_alignEnd="@+id/bottomText" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:id="@+id/theSpinner"
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:id="@+id/bottomText"
+        style="@style/Widget.AppCompat.EditText"
+        android:hint="Bottom Text"
+        android:layout_below="@+id/topText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:text="Much Memes" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:id="@+id/topText"
+        style="@style/Widget.AppCompat.EditText"
+        android:hint="Top Text"
+        android:layout_marginTop="23dp"
+        android:layout_below="@+id/theSpinner"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="Test" />
+
+    <Button
+        android:text="Share"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/makeMeme"
+        android:layout_toRightOf="@+id/makeMeme"
+        android:layout_toEndOf="@+id/makeMeme"
+        android:id="@+id/button3"
+        android:onClick="shareIt" />
+</RelativeLayout>
