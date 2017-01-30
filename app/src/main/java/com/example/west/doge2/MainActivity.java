@@ -20,6 +20,8 @@ import android.widget.Spinner;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,10 +55,34 @@ public class MainActivity extends AppCompatActivity {
     @NonNull
     private String getURLString(String meme, String topText, String bottomText) {
         ImageView mImageView = (ImageView)findViewById(R.id.imageView);
+
+        String formattedMemeText = formatMemeText(meme, topText, bottomText);
+
         return "https://memegen.link/"
-                + meme + "/" + topText + "/" + bottomText
+                + formattedMemeText
                 + ".jpg?height=" + mImageView.getHeight()
                 + "&width=" + mImageView.getWidth();
+    }
+
+    private String formatMemeText(String meme, String topText, String bottomText) {
+        HashMap<String, String> specialCharMap = new HashMap<>();
+        specialCharMap.put("\\?", "~q");
+        specialCharMap.put("%", "~p");
+        specialCharMap.put("#", "~h");
+        specialCharMap.put("\\/", "~s");
+        specialCharMap.put("\"", "''");
+        specialCharMap.put(" ", "-");
+        specialCharMap.put("-", "--");
+        specialCharMap.put("_", "__");
+
+        for(Map.Entry<String, String> entry : specialCharMap.entrySet())
+        {
+            meme = meme.replaceAll(entry.getKey(), entry.getValue());
+            topText = topText.replaceAll(entry.getKey(), entry.getValue());
+            bottomText = bottomText.replaceAll(entry.getKey(), entry.getValue());
+        }
+
+        return meme + "/" + topText + "/" + bottomText;
     }
 
     public void shareIt(View view) {
