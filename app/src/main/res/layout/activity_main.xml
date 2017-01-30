@@ -52,7 +52,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp"
-        android:text="Much Memes" />
+        android:text="A Meme" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
         android:layout_below="@+id/theSpinner"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:text="Test" />
+        android:text="You Are" />
 
     <Button
         android:text="Share"

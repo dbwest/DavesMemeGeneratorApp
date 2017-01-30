@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ShareActionProvider;
@@ -36,8 +37,26 @@ public class MainActivity extends AppCompatActivity {
 
         populateMemeChoices(mMeme);
 
-        String url = "https://memegen.link/wonka/test/much-memes.jpg";
+        String url = getURLString();
         makeMemeImage(url);
+    }
+
+    @NonNull
+    private String getURLString() {
+        ImageView mImageView = (ImageView)findViewById(R.id.imageView);
+        return "https://memegen.link/wonka/you-are/a-meme.jpg?height="
+                + mImageView.getHeight()
+                + "&width="
+                + mImageView.getWidth();
+    }
+
+    @NonNull
+    private String getURLString(String meme, String topText, String bottomText) {
+        ImageView mImageView = (ImageView)findViewById(R.id.imageView);
+        return "https://memegen.link/"
+                + meme + "/" + topText + "/" + bottomText
+                + ".jpg?height=" + mImageView.getHeight()
+                + "&width=" + mImageView.getWidth();
     }
 
     public void shareIt(View view) {
@@ -73,12 +92,13 @@ public class MainActivity extends AppCompatActivity {
         Spinner mMeme = (Spinner) findViewById(R.id.theSpinner);
         EditText mTopText = (EditText) findViewById(R.id.topText);
         EditText mBottomText = (EditText) findViewById(R.id.bottomText);
+        ImageView mImageView = (ImageView)findViewById(R.id.imageView);
 
         String topText = mTopText.getText().toString();
         String bottomText = mBottomText.getText().toString();
         String meme = mMeme.getSelectedItem().toString();
 
-        String url = "https://memegen.link/" + meme + "/" + topText + "/" + bottomText + ".jpg";
+        String url = getURLString(meme, topText, bottomText);
 
         makeMemeImage(url);
     }
