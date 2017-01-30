@@ -7,28 +7,17 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.ShareActionProvider;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,47 +25,19 @@ public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1232141512;
     private ShareActionProvider mShareActionProvider;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
+        Spinner mMeme = (Spinner) findViewById(R.id.theSpinner);
 
-            // Should we show an explanation?
-            if (shouldShowRequestPermissionRationale(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                // Explain to the user why we need to read the contacts
-            }
+        askForPermission();
 
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-
-            // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-            // app-defined int constant that should be quite unique
-
-            return;
-        }
-
-        Button mButton = (Button) findViewById(R.id.makeMeme);
-
-        Spinner spinner = (Spinner) findViewById(R.id.theSpinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.memes, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-
-
+        populateMemeChoices(mMeme);
 
         String url = "https://memegen.link/wonka/test/much-memes.jpg";
-        new DownloadImageTask((ImageView) findViewById(R.id.imageView))
-                .execute(url);
+        makeMemeImage(url);
     }
 
     public void shareIt(View view) {
@@ -109,23 +70,60 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void genMeme(View view) {
-        EditText mTopText = (EditText) findViewById(R.id.topText);
-        String topText = mTopText.getText().toString();
-        EditText mBottomText = (EditText) findViewById(R.id.bottomText);
-        String bottomText = mBottomText.getText().toString();
         Spinner mMeme = (Spinner) findViewById(R.id.theSpinner);
+        EditText mTopText = (EditText) findViewById(R.id.topText);
+        EditText mBottomText = (EditText) findViewById(R.id.bottomText);
+
+        String topText = mTopText.getText().toString();
+        String bottomText = mBottomText.getText().toString();
         String meme = mMeme.getSelectedItem().toString();
+
         String url = "https://memegen.link/" + meme + "/" + topText + "/" + bottomText + ".jpg";
-        new DownloadImageTask((ImageView) findViewById(R.id.imageView))
-                .execute(url);
+
+        makeMemeImage(url);
     }
 
-    public static Bitmap loadBitmapFromView(View v) {
+    private void askForPermission() {
+        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (shouldShowRequestPermissionRationale(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                // Explain to the user why we need to read the contacts
+            }
+
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+
+            // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+            // app-defined int constant that should be quite unique
+
+            return;
+        }
+    }
+
+    private void populateMemeChoices(Spinner mMeme) {
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.memes, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        mMeme.setAdapter(adapter);
+    }
+
+    private static Bitmap loadBitmapFromView(View v) {
         Bitmap b = Bitmap.createBitmap( v.getLayoutParams().width, v.getLayoutParams().height, Bitmap.Config.ARGB_8888);
         Canvas c = new Canvas(b);
         v.layout(0, 0, v.getLayoutParams().width, v.getLayoutParams().height);
         v.draw(c);
         return b;
+    }
+
+    private void makeMemeImage(String url) {
+        new DownloadImageTask((ImageView) findViewById(R.id.imageView))
+                .execute(url);
     }
 
 }
