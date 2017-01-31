@@ -34,61 +34,20 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Spinner mMeme = (Spinner) findViewById(R.id.theSpinner);
+        ImageView mImageView = (ImageView)findViewById(R.id.imageView);
 
         askForPermission();
 
         populateMemeChoices(mMeme);
 
-        String url = getURLString();
+        String url = MemeHelper.getURLString(mImageView);
         makeMemeImage(url);
-    }
-
-    @NonNull
-    private String getURLString() {
-        ImageView mImageView = (ImageView)findViewById(R.id.imageView);
-        return "https://memegen.link/wonka/you-are/a-meme.jpg?height="
-                + mImageView.getHeight()
-                + "&width="
-                + mImageView.getWidth();
-    }
-
-    @NonNull
-    private String getURLString(String meme, String topText, String bottomText) {
-        ImageView mImageView = (ImageView)findViewById(R.id.imageView);
-
-        String formattedMemeText = formatMemeText(meme, topText, bottomText);
-
-        return "https://memegen.link/"
-                + formattedMemeText
-                + ".jpg?height=" + mImageView.getHeight()
-                + "&width=" + mImageView.getWidth();
-    }
-
-    private String formatMemeText(String meme, String topText, String bottomText) {
-        HashMap<String, String> specialCharMap = new HashMap<>();
-        specialCharMap.put("\\?", "~q");
-        specialCharMap.put("%", "~p");
-        specialCharMap.put("#", "~h");
-        specialCharMap.put("\\/", "~s");
-        specialCharMap.put("\"", "''");
-        specialCharMap.put(" ", "-");
-        specialCharMap.put("-", "--");
-        specialCharMap.put("_", "__");
-
-        for(Map.Entry<String, String> entry : specialCharMap.entrySet())
-        {
-            meme = meme.replaceAll(entry.getKey(), entry.getValue());
-            topText = topText.replaceAll(entry.getKey(), entry.getValue());
-            bottomText = bottomText.replaceAll(entry.getKey(), entry.getValue());
-        }
-
-        return meme + "/" + topText + "/" + bottomText;
     }
 
     public void shareIt(View view) {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+
         ImageView mImageView = (ImageView)findViewById(R.id.imageView);
         Bitmap bmp = loadBitmapFromView(mImageView);
 
@@ -124,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         String bottomText = mBottomText.getText().toString();
         String meme = mMeme.getSelectedItem().toString();
 
-        String url = getURLString(meme, topText, bottomText);
+        String url = MemeHelper.getURLString(meme, topText, bottomText, mImageView);
 
         makeMemeImage(url);
     }
