@@ -38,7 +38,10 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.google.android.support:wearable:2.0.0-beta1'
-    compile 'com.google.android.gms:play-services-wearable:10.0.1'
+//    compile 'com.google.android.gms:play-services-wearable:10.0.1'
     provided 'com.google.android.wearable:wearable:2.0.0-beta1'
     testCompile 'junit:junit:4.12'
+    compile 'com.google.android.gms:play-services:6.1.+'
+    compile 'com.android.support:support-v4:25.0.+'
+    wearApp project(':doge2wear')
 }
